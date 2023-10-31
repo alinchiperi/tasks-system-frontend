@@ -25,4 +25,13 @@ export class TasksService {
     const url = `${this.apiServerUrl}/api/task/all?email=${email}`;
     return this.http.get<Task[]>(url, { headers });
   }
+
+  addTask(task): Observable<any> {
+    const authToken = this.authService.getAuthToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    const url = `${this.apiServerUrl}/api/task/add`;
+    return this.http.post(url, task, { headers });
+  }
 }
