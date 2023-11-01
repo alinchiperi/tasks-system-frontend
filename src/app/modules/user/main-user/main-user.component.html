@@ -54,3 +54,33 @@
     </tr>
   </ng-template>
 </p-table>
+<p-card>
+  <form [formGroup]="taskForm" (ngSubmit)="addTask()">
+    <div class="flex-chip">
+      <input pInputText placeholder="Title" formControlName="title" />
+      <textarea
+        pInputTextarea
+        placeholder="Description"
+        [autoResize]="true"
+        formControlName="description"
+      ></textarea>
+      <label for="tags">Tags</label>
+      <p-chips
+        separator=","
+        placeholder=" Hint: a, b, c"
+        #tags
+        formControlName="tags"
+      ></p-chips>
+      <p-calendar
+        [showTime]="true"
+        [showSeconds]="false"
+        placeholder="Date"
+        formControlName="date"
+        [minDate]="minDate"
+      ></p-calendar>
+
+      <p-button type="submit"> Save</p-button>
+      <p-button> Cancel</p-button>
+    </div>
+  </form>
+</p-card>
