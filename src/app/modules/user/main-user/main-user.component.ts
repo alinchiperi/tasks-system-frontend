@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormControlName, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Table } from 'primeng/table';
-import { Tag } from 'src/app/model/Tag';
 import { Task } from 'src/app/model/Task';
+import { AuthService } from 'src/app/services/auth.service';
 import { TasksService } from 'src/app/services/tasks.service';
 
 @Component({
@@ -12,16 +12,18 @@ import { TasksService } from 'src/app/services/tasks.service';
 })
 export class MainUserComponent implements OnInit {
   tasks: Task[] = [];
-  tags: Array<Tag> = new Array();
   taskForm = new FormGroup({
-    title: new FormControl(),
+    title: new FormControl('', Validators.required),
     description: new FormControl(),
-    date: new FormControl(),
+    date: new FormControl(new Date(), Validators.required),
     tags: new FormControl(),
   });
   minDate: Date | undefined;
-  constructor(private tasksService: TasksService) {}
-  showTask: boolean;
+  constructor(
+    private tasksService: TasksService,
+    private authService: AuthService
+  ) {}
+  showTask: boolean = false;
 
   ngOnInit(): void {
     this.minDate = new Date();
@@ -51,19 +53,37 @@ export class MainUserComponent implements OnInit {
       ].join(':')
     );
   }
+  showTaskForm() {
+    this.showTask = true;
+  }
   addTask() {
-    const title = this.taskForm.controls.title.value;
-    const description = this.taskForm.controls.description.value;
-    const date = this.taskForm.controls.date.value;
-    const tagsControl = this.taskForm.controls.tags.value;
+    if (this.taskForm.valid) {
+      const title = this.taskForm.controls.title.value;
+      const description = this.taskForm.controls.description.value;
+      const date = this.taskForm.controls.date.value;
+      const dueDate = this.formatDate(date);
+      const tagsArray = this.taskForm.controls.tags.value;
+      let tags = [];
+      if (tagsArray !== null) {
+        tags = tagsArray.map((item) => ({ name: item }));
+      }
+      let task = {
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        tags: tags,
+        userId: this.authService.getUserId(),
+      };
 
-    tagsControl.forEach((element) => {
-      this.tags.push(new Tag(element));
-    });
-    // console.log('title is ' + title);
-    // console.log('description is ' + description);
-    // console.log('tags is ' + tags.length);
-    // console.log('date is ' + this.formatDate(date));
-    console.log(this.tags);
+      let subscription = this.tasksService.addTask(task).subscribe(() => {
+        subscription.unsubscribe();
+      });
+      this.showTask = false;
+
+      window.location.reload();
+    }
+  }
+  cancel() {
+    this.showTask = false;
   }
 }
