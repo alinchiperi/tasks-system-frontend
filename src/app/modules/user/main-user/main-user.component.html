@@ -18,7 +18,7 @@
         pButton
         label="Add"
         icon="pi pi-plus-circle"
-        (click)="addTask()"
+        (click)="showTaskForm()"
       ></button>
       <span class="p-input-icon-left ml-auto">
         <i class="pi pi-search"></i>
@@ -54,7 +54,7 @@
     </tr>
   </ng-template>
 </p-table>
-<p-card>
+<p-dialog [(visible)]="showTask">
   <form [formGroup]="taskForm" (ngSubmit)="addTask()">
     <div class="flex-chip">
       <input pInputText placeholder="Title" formControlName="title" />
@@ -80,7 +80,7 @@
       ></p-calendar>
 
       <p-button type="submit"> Save</p-button>
-      <p-button> Cancel</p-button>
+      <p-button (click)="cancel()"> Cancel </p-button>
     </div>
   </form>
-</p-card>
+</p-dialog>

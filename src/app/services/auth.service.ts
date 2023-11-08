@@ -76,4 +76,13 @@ export class AuthService {
     // from the API.
     return true;
   }
+
+  getUserId(): string | null {
+    const token = this.getAuthToken();
+    if (!token) {
+      return null;
+    }
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    return decodedToken.user_id;
+  }
 }
