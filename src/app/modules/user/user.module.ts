@@ -13,6 +13,8 @@ import { ChipsModule } from 'primeng/chips';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [MainUserComponent],
@@ -29,6 +31,8 @@ import { DialogModule } from 'primeng/dialog';
     CalendarModule,
     ReactiveFormsModule,
     DialogModule,
+    ToastModule,
   ],
+  providers: [MessageService],
 })
 export class UserModule {}
