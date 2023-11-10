@@ -2,7 +2,7 @@
   [value]="tasks"
   styleClass="p-datatable-striped"
   #dt1
-  [globalFilterFields]="['title', 'Description', 'status']"
+  [globalFilterFields]="['title', 'description', 'status']"
 >
   <ng-template pTemplate="caption">
     <div class="flex">
@@ -39,6 +39,7 @@
       <th>Task Status</th>
       <th>Due Date</th>
       <th>Tags</th>
+      <th>Operations</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
@@ -50,6 +51,15 @@
       <td>{{ task.dueDate | date : "dd-MM-yyyy, HH:mm" }}</td>
       <td>
         <p-tag *ngFor="let tag of task.tags">#{{ tag.name }}</p-tag>
+      </td>
+      <td>
+        <p-button
+          [rounded]="true"
+          severity="danger"
+          icon="pi pi-trash"
+          [outlined]="true"
+          (click)="deleteTask(task.id)"
+        ></p-button>
       </td>
     </tr>
   </ng-template>
@@ -84,3 +94,4 @@
     </div>
   </form>
 </p-dialog>
+<p-toast></p-toast>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Task } from 'src/app/model/Task';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,12 +22,16 @@ export class MainUserComponent implements OnInit {
   minDate: Date | undefined;
   constructor(
     private tasksService: TasksService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {}
   showTask: boolean = false;
 
   ngOnInit(): void {
     this.minDate = new Date();
+    this.fetchTasks();
+  }
+  fetchTasks(): void {
     let subscription = this.tasksService.getTasksForUser().subscribe((data) => {
       this.tasks = data;
       subscription.unsubscribe;
@@ -75,15 +80,50 @@ export class MainUserComponent implements OnInit {
         userId: this.authService.getUserId(),
       };
 
-      let subscription = this.tasksService.addTask(task).subscribe(() => {
-        subscription.unsubscribe();
+      let subscription = this.tasksService.addTask(task).subscribe({
+        next: () => {
+          subscription.unsubscribe();
+          this.showTask = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Item added',
+          });
+          this.fetchTasks();
+        },
+        error: (error) => {
+          console.error('Error deleting item:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Error adding  item',
+          });
+          this.showTask = false;
+        },
       });
-      this.showTask = false;
-
-      window.location.reload();
     }
   }
   cancel() {
     this.showTask = false;
+  }
+  deleteTask(taskId: number): void {
+    this.tasksService.deleteTask(taskId).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Item deleted',
+        });
+        this.fetchTasks();
+      },
+      error: (error) => {
+        console.error('Error deleting item:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error deleting item',
+        });
+      },
+    });
   }
 }
