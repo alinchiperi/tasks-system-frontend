@@ -87,12 +87,12 @@ export class MainUserComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Item added',
+            detail: 'Task added',
           });
           this.fetchTasks();
         },
         error: (error) => {
-          console.error('Error deleting item:', error);
+          console.error('Error adding task:', error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -112,7 +112,7 @@ export class MainUserComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Item deleted',
+          detail: 'Task deleted',
         });
         this.fetchTasks();
       },
@@ -122,6 +122,26 @@ export class MainUserComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail: 'Error deleting item',
+        });
+      },
+    });
+  }
+  completeTask(taskId: number): void {
+    this.tasksService.completeTask(taskId).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task Completed',
+        });
+        this.fetchTasks();
+      },
+      error: (error) => {
+        console.error('Error completed task:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error completed task',
         });
       },
     });

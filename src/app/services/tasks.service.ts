@@ -42,4 +42,15 @@ export class TasksService {
     const url = `${this.apiServerUrl}/api/task/${taskId}/delete`;
     return this.http.delete(url, { headers });
   }
+  completeTask(taskId: number): Observable<any> {
+    const authToken = this.authService.getAuthToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    const url = `${this.apiServerUrl}/api/task/${taskId}/complete`;
+
+    console.log(this.http.patch(url, { headers }));
+
+    return this.http.patch(url, null, { headers });
+  }
 }

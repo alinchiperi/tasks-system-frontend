@@ -53,13 +53,23 @@
         <p-tag *ngFor="let tag of task.tags">#{{ tag.name }}</p-tag>
       </td>
       <td>
-        <p-button
-          [rounded]="true"
-          severity="danger"
-          icon="pi pi-trash"
-          [outlined]="true"
-          (click)="deleteTask(task.id)"
-        ></p-button>
+        <div class="flex align-items-center justify-content-center gap-1">
+          <p-button
+            [rounded]="true"
+            icon="pi pi-check"
+            [outlined]="true"
+            severity="success"
+            (click)="completeTask(task.id)"
+          >
+          </p-button>
+          <p-button
+            [rounded]="true"
+            severity="danger"
+            icon="pi pi-trash"
+            [outlined]="true"
+            (click)="deleteTask(task.id)"
+          ></p-button>
+        </div>
       </td>
     </tr>
   </ng-template>
