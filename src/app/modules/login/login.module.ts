@@ -7,9 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { RegisterComponent } from './register/register.component';
+import { StyleClassModule } from 'primeng/styleclass';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
     LoginRoutingModule,
@@ -18,6 +20,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ReactiveFormsModule,
     PanelModule,
     InputTextModule,
+    StyleClassModule,
+    ToastModule,
   ],
 })
 export class LoginModule {}

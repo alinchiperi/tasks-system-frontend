@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -27,9 +27,11 @@ export class AuthService {
             const token = data['token'];
             localStorage.setItem('token', token);
             return data;
-          } else {
-            console.log('Problem with login');
           }
+        }),
+        catchError((error: any) => {
+          console.error('Error during login:', error);
+          throw error; // Rethrow the error to be caught by the subscriber
         })
       );
   }
@@ -84,5 +86,13 @@ export class AuthService {
     }
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
     return decodedToken.user_id;
+  }
+  registerUser(email: string, password: string): Observable<any> {
+    const body = {
+      email: email,
+      password: password,
+    };
+    const url = `${this.apiServerUrl}/api/auth/register`;
+    return this.http.post(url, body);
   }
 }

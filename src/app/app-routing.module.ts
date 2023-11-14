@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { RegisterComponent } from './modules/login/register/register.component';
+// import { AuthGuard } from './core/auth.guard';
 const routes: Routes = [
   {
     path: 'login',
@@ -13,6 +14,10 @@ const routes: Routes = [
       import('./modules/user/user.module').then((m) => m.UserModule),
     // canActivate: [AuthGuard],
     // data: { role: 'User' },
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
 ];
 
