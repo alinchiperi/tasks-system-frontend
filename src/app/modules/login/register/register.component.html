@@ -1,0 +1,36 @@
+<div class="form">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <input type="text" pInputText placeholder="Email" formControlName="email" />
+    <small
+      *ngIf="registerForm.controls['email'].errors?.['required'] && submitted"
+    >
+      Field is required
+    </small>
+
+    <input
+      type="password"
+      pInputText
+      placeholder="Password"
+      formControlName="password"
+    />
+    <small
+      *ngIf="registerForm.controls['password'].errors?.['required'] && submitted"
+    >
+      Field is required
+    </small>
+
+    <input
+      type="password"
+      pInputText
+      placeholder="Confirm Password"
+      formControlName="confirm"
+    />
+    <small
+      *ngIf="registerForm.controls['confirm'].errors?.['required'] && submitted"
+    >
+      Field is required
+    </small>
+    <button pButton type="submit">Register</button>
+  </form>
+</div>
+<p-toast></p-toast>

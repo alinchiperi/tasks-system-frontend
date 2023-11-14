@@ -1,6 +1,11 @@
 <div class="form">
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <input type="text" pInputText placeholder="Email" formControlName="email" />
+    <small
+      *ngIf="loginForm.controls['email'].errors?.['required'] && submitted"
+    >
+      Field is required
+    </small>
 
     <input
       type="password"
@@ -8,7 +13,14 @@
       placeholder="Password"
       formControlName="password"
     />
+    <small
+      *ngIf="loginForm.controls['password'].errors?.['required'] && submitted"
+    >
+      Field is required
+    </small>
 
-    <button type="submit" pButton>Login</button>
+    <button pButton type="submit">Login</button>
+    <button (click)="goToRegister()" pButton>Register</button>
   </form>
 </div>
+<p-toast></p-toast>
