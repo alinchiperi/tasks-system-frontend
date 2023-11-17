@@ -20,12 +20,14 @@ export class MainUserComponent implements OnInit {
     tags: new FormControl(),
   });
   minDate: Date | undefined;
+  selectedTask: Task | null = null;
   constructor(
     private tasksService: TasksService,
     private authService: AuthService,
     private messageService: MessageService
   ) {}
   showTask: boolean = false;
+  editDialogVisible = false;
 
   ngOnInit(): void {
     this.minDate = new Date();
@@ -146,4 +148,10 @@ export class MainUserComponent implements OnInit {
       },
     });
   }
+  showEditDialog(task: Task): void {
+    this.selectedTask = { ...task };
+    this.editDialogVisible = true;
+    console.log(task);
+  }
+  onEdit() {}
 }

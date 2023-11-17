@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RegisterComponent } from './register/register.component';
 import { StyleClassModule } from 'primeng/styleclass';
 import { ToastModule } from 'primeng/toast';
+import { CheckboxModule } from 'primeng/checkbox';
 @NgModule({
   declarations: [LoginComponent, RegisterComponent],
   imports: [
@@ -22,6 +23,7 @@ import { ToastModule } from 'primeng/toast';
     InputTextModule,
     StyleClassModule,
     ToastModule,
+    CheckboxModule,
   ],
 })
 export class LoginModule {}

@@ -39,7 +39,7 @@
       <th>Task Status</th>
       <th>Due Date</th>
       <th>Tags</th>
-      <th>Operations</th>
+      <th></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-task>
@@ -50,10 +50,20 @@
       <td>{{ task.taskStatus }}</td>
       <td>{{ task.dueDate | date : "dd-MM-yyyy, HH:mm" }}</td>
       <td>
-        <p-tag *ngFor="let tag of task.tags">#{{ tag.name }}</p-tag>
+        <div class="flex align-items-center justify-content-center gap-1">
+          <p-tag *ngFor="let tag of task.tags">#{{ tag.name }}</p-tag>
+        </div>
       </td>
       <td>
-        <div class="flex align-items-center justify-content-center gap-1">
+        <div class="flex justify-content-center flex-wrap gap-1">
+          <p-button
+            [rounded]="true"
+            icon="pi pi-pencil"
+            [outlined]="true"
+            severity="primary"
+            (click)="showEditDialog(task)"
+          >
+          </p-button>
           <p-button
             [rounded]="true"
             icon="pi pi-check"
@@ -74,6 +84,7 @@
     </tr>
   </ng-template>
 </p-table>
+
 <p-dialog [(visible)]="showTask">
   <form [formGroup]="taskForm" (ngSubmit)="addTask()">
     <div class="flex-chip">
@@ -103,5 +114,41 @@
       <p-button (click)="cancel()"> Cancel </p-button>
     </div>
   </form>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="editDialogVisible"
+  header="Edit Task"
+  [modal]="true"
+  [responsive]="true"
+  [style]="{ width: '60%' }"
+  [baseZIndex]="1000"
+>
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="editTitle">Title</label>
+      <input id="editTitle" pInputText />
+    </div>
+    <div class="p-field">
+      <label for="editDescription">Description</label>
+      <textarea></textarea>
+    </div>
+    <div class="p-field">
+      <label for="editDueDate">Due Date</label>
+      <input />
+    </div>
+    <div class="p-field">
+      <label for="editTaskStatus">Task Status</label>
+      <input />
+    </div>
+    <div class="p-field">
+      <label for="editTags">Tags</label>
+      <div class="flex align-items-center justify-content-center gap-1">
+        <p-tag *ngFor="let tag of selectedTask?.tags">#{{ tag.name }}</p-tag>
+      </div>
+    </div>
+    <!-- Add more form fields for other properties -->
+    <button pButton label="Save" icon="pi pi-check" (click)="onEdit()"></button>
+  </div>
 </p-dialog>
 <p-toast></p-toast>
