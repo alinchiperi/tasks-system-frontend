@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { min } from 'rxjs';
 import { Task } from 'src/app/model/Task';
 import { AuthService } from 'src/app/services/auth.service';
 import { TasksService } from 'src/app/services/tasks.service';
@@ -19,8 +21,26 @@ export class MainUserComponent implements OnInit {
     date: new FormControl(new Date(), Validators.required),
     tags: new FormControl(),
   });
+  selectedTask: Task = {
+    title: '',
+    id: 0,
+    description: '',
+    dueDate: new Date(),
+    taskStatus: 'PENDING',
+    userId: 0,
+    tags: [],
+  };
+  taskFormEdit = new FormGroup({
+    title: new FormControl('', Validators.required),
+    description: new FormControl(),
+    date: new FormControl(new Date(), Validators.required),
+    status: new FormControl(),
+    tags: new FormControl(),
+  });
+  statusList: string[] = ['PENDING', 'IN_PROGRESS', 'COMPLETED', 'CANCELED'];
   minDate: Date | undefined;
-  selectedTask: Task | null = null;
+
+  tagNames: string[];
   constructor(
     private tasksService: TasksService,
     private authService: AuthService,
@@ -150,8 +170,62 @@ export class MainUserComponent implements OnInit {
   }
   showEditDialog(task: Task): void {
     this.selectedTask = { ...task };
+    this.tagNames = this.selectedTask.tags.map((tag) => tag.name);
     this.editDialogVisible = true;
-    console.log(task);
+    this.tagNames = this.selectedTask.tags.map((tag) => tag.name);
+    this.taskFormEdit.patchValue({
+      title: this.selectedTask.title,
+      description: this.selectedTask.description,
+      date: task.dueDate,
+      tags: this.tagNames,
+      status: this.selectedTask.taskStatus,
+    });
   }
-  onEdit() {}
+  onEdit() {
+    const title = this.taskFormEdit.controls.title.value;
+    const description = this.taskFormEdit.controls.description.value;
+    const date = this.taskFormEdit.controls.date.value;
+    const dueDate = this.formatDate(date);
+    const tagsArray = this.taskFormEdit.controls.tags.value;
+    const status = this.taskFormEdit.controls.status.value;
+
+    let tags = [];
+    if (tagsArray !== null) {
+      tags = tagsArray.map((item) => ({ name: item }));
+    }
+    let id = this.selectedTask.id;
+    let task = {
+      id: id,
+      title: title,
+      description: description,
+      taskStatus: status,
+      dueDate: dueDate,
+      userId: 1,
+      tags: tags,
+    };
+
+    console.log(status);
+
+    let subscription = this.tasksService.editTask(id, task).subscribe({
+      next: () => {
+        subscription.unsubscribe();
+        this.editDialogVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Task edited',
+        });
+        this.fetchTasks();
+      },
+      error: (error) => {
+        console.error('Error adding task:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error editing  task',
+        });
+        this.showTask = false;
+      },
+    });
+  }
 }

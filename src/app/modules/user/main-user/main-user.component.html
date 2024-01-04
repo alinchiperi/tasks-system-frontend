@@ -108,6 +108,7 @@
         placeholder="Date"
         formControlName="date"
         [minDate]="minDate"
+        [showIcon]="true"
       ></p-calendar>
 
       <p-button type="submit"> Save</p-button>
@@ -121,34 +122,48 @@
   header="Edit Task"
   [modal]="true"
   [responsive]="true"
-  [style]="{ width: '60%' }"
-  [baseZIndex]="1000"
+  [style]="{ width: '60%', height: '80%' }"
 >
-  <div class="p-fluid">
-    <div class="p-field">
-      <label for="editTitle">Title</label>
-      <input id="editTitle" pInputText />
-    </div>
-    <div class="p-field">
-      <label for="editDescription">Description</label>
-      <textarea></textarea>
-    </div>
-    <div class="p-field">
-      <label for="editDueDate">Due Date</label>
-      <input />
-    </div>
-    <div class="p-field">
-      <label for="editTaskStatus">Task Status</label>
-      <input />
-    </div>
-    <div class="p-field">
-      <label for="editTags">Tags</label>
-      <div class="flex align-items-center justify-content-center gap-1">
-        <p-tag *ngFor="let tag of selectedTask?.tags">#{{ tag.name }}</p-tag>
+  <form [formGroup]="taskFormEdit" (ngSubmit)="(onEdit)">
+    <div class="p-fluid p-formgrid flex flex-wrap flex-column">
+      <p-calendar
+        class="p-col"
+        [showTime]="true"
+        [showSeconds]="false"
+        [showIcon]="true"
+        formControlName="date"
+        [minDate]="minDate"
+      ></p-calendar>
+      <div class="p-field p-col">
+        <label for="editTitle">Title</label>
+        <input id="editTitle" pInputText formControlName="title" />
       </div>
+      <div class="p-field">
+        <label for="editDescription">Description</label>
+        <input pInputText formControlName="description" />
+      </div>
+      <div class="p-field">
+        <p-dropdown
+          [options]="statusList"
+          formControlName="status"
+        ></p-dropdown>
+      </div>
+      <div class="p-field">
+        <label for="editTags">Tags</label>
+        <p-chips
+          separator=","
+          placeholder=" Hint: a, b, c"
+          formControlName="tags"
+        >
+        </p-chips>
+      </div>
+      <button
+        pButton
+        label="Save"
+        icon="pi pi-check"
+        (click)="onEdit()"
+      ></button>
     </div>
-    <!-- Add more form fields for other properties -->
-    <button pButton label="Save" icon="pi pi-check" (click)="onEdit()"></button>
-  </div>
+  </form>
 </p-dialog>
 <p-toast></p-toast>
