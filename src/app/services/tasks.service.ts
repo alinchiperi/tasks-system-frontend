@@ -53,4 +53,12 @@ export class TasksService {
 
     return this.http.patch(url, null, { headers });
   }
+  editTask(id, task): Observable<any> {
+    const authToken = this.authService.getAuthToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    const url = `${this.apiServerUrl}/api/task/${id}/update`;
+    return this.http.patch(url, task, { headers });
+  }
 }

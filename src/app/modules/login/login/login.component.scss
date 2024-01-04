@@ -1,11 +1,6 @@
-.form {
+.center-container {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 100px 0px;
-}
-form {
-  gap: 20px;
-
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
 }
