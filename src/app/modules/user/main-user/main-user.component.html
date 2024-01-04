@@ -85,7 +85,7 @@
   </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="showTask">
+<p-dialog [(visible)]="showTask" [style]="{ width: '50vw' }">
   <form [formGroup]="taskForm" (ngSubmit)="addTask()">
     <div class="flex-chip">
       <input pInputText placeholder="Title" formControlName="title" />
