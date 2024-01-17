@@ -1,0 +1,72 @@
+<div>
+  <form
+    [formGroup]="reminderForm"
+    class="flex flex-column gap-3"
+    (ngSubmit)="submit()"
+  >
+    <label>Task</label>
+    <p-dropdown
+      formControlName="selectTask"
+      [options]="tasks"
+      optionValue="title"
+      optionLabel="title"
+    >
+    </p-dropdown>
+    <label>Date</label>
+    <p-calendar
+      class="p-col"
+      [showTime]="true"
+      [showSeconds]="false"
+      [showIcon]="true"
+      formControlName="date"
+      [minDate]="minDate"
+    ></p-calendar>
+    <p-button type="submit">Add reminder </p-button>
+  </form>
+</div>
+<p-divider></p-divider>
+<div *ngFor="let reminder of reminders" class="reminder-item">
+  <div class="reminder-details">
+    <div>ID: {{ reminder.id }}</div>
+    <div>Task ID: {{ reminder.taskId }}</div>
+    <div>Reminder Date Time: {{ reminder.reminderDateTime | date }}</div>
+    <div>Sent: {{ reminder.sent ? "Yes" : "No" }}</div>
+  </div>
+  <div class="reminder-actions">
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-pencil"
+      class="p-button-secondary"
+      (click)="showEditForm(reminder)"
+    ></button>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-trash"
+      class="p-button-danger"
+      (click)="deleteReminder(reminder)"
+    ></button>
+  </div>
+  <hr />
+</div>
+<p-dialog [(visible)]="showEdit" [style]="{ width: '40%', height: '100%' }">
+  <form
+    [formGroup]="reminderForm"
+    (ngSubmit)="editReminder()"
+    class="flex flex-column gap-3"
+  >
+    <label>Date</label>
+    <p-calendar
+      class="p-col"
+      [showTime]="true"
+      [showSeconds]="false"
+      [showIcon]="true"
+      formControlName="date"
+      [minDate]="minDate"
+    ></p-calendar>
+    <p-button type="submit">edit </p-button>
+  </form>
+</p-dialog>

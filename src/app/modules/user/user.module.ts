@@ -18,9 +18,11 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RemindersComponent } from './reminders/reminders.component';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
-  declarations: [MainUserComponent],
+  declarations: [MainUserComponent, RemindersComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
@@ -37,6 +39,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ToastModule,
     DropdownModule,
     FormsModule,
+    DividerModule,
   ],
   providers: [MessageService],
 })
