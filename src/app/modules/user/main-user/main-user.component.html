@@ -85,7 +85,7 @@
   </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="showTask" [style]="{ width: '50vw' }">
+<p-dialog [(visible)]="showTask" [style]="{ width: '50%', height: '100%' }">
   <form [formGroup]="taskForm" (ngSubmit)="addTask()">
     <div class="flex-chip">
       <input pInputText placeholder="Title" formControlName="title" />
@@ -122,7 +122,7 @@
   header="Edit Task"
   [modal]="true"
   [responsive]="true"
-  [style]="{ width: '60%', height: '80%' }"
+  [style]="{ width: '60%', height: '100%' }"
 >
   <form [formGroup]="taskFormEdit" (ngSubmit)="(onEdit)">
     <div class="p-fluid p-formgrid flex flex-wrap flex-column">
