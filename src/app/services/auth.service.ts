@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 
@@ -72,10 +72,6 @@ export class AuthService {
     if (!token) {
       return false;
     }
-
-    // Check if the token is expired or invalid (you may need to use a JWT library for this)
-    // You can also handle token expiration on the server-side and return appropriate responses
-    // from the API.
     return true;
   }
 
@@ -94,5 +90,16 @@ export class AuthService {
     };
     const url = `${this.apiServerUrl}/api/auth/register`;
     return this.http.post(url, body);
+  }
+
+  buyPremium(): Observable<any> {
+    const authToken = this.getAuthToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+    });
+    const email = this.getEmail();
+    const url = `${this.apiServerUrl}/api/user/${email}/premium`;
+
+    return this.http.post(url, null, { headers });
   }
 }

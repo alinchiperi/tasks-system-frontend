@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { min } from 'rxjs';
@@ -44,7 +45,8 @@ export class MainUserComponent implements OnInit {
   constructor(
     private tasksService: TasksService,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
   showTask: boolean = false;
   editDialogVisible = false;
@@ -223,6 +225,33 @@ export class MainUserComponent implements OnInit {
           severity: 'error',
           summary: 'Error',
           detail: 'Error editing  task',
+        });
+        this.showTask = false;
+      },
+    });
+  }
+  goToReminders() {
+    this.router.navigate(['/user/reminders']);
+  }
+
+  buyPremium() {
+    let subscription = this.authService.buyPremium().subscribe({
+      next: () => {
+        subscription.unsubscribe();
+        this.editDialogVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'premium',
+          detail: 'Premium ',
+        });
+        this.router.navigate(['/users']);
+      },
+      error: (error) => {
+        console.error('Error :', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error',
         });
         this.showTask = false;
       },

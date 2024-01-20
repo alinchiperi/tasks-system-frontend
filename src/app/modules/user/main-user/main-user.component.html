@@ -5,7 +5,7 @@
   [globalFilterFields]="['title', 'description', 'status']"
 >
   <ng-template pTemplate="caption">
-    <div class="flex">
+    <div class="flex gap-2">
       <button
         pButton
         label="Clear"
@@ -19,6 +19,20 @@
         label="Add"
         icon="pi pi-plus-circle"
         (click)="showTaskForm()"
+      ></button>
+      <button
+        pButton
+        label="Reminders"
+        icon="pi pi-history"
+        severity="p-button-info"
+        (click)="goToReminders()"
+      ></button>
+      <button
+        pButton
+        label="Buy Premium"
+        icon="pi pi-money-bill"
+        class="p-button-success"
+        (click)="buyPremium()"
       ></button>
       <span class="p-input-icon-left ml-auto">
         <i class="pi pi-search"></i>
